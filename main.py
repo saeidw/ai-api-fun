@@ -21,8 +21,8 @@ def get_wikidata(
 
 @app.get("/search/title")
 def search_wikidata(
-    db: Session = Depends(get_db),
-    title: str
+    title: str,
+    db: Session = Depends(get_db)
 ):
     """Fetches a list of articles based on a search of their titles - returns the content."""
     result = db.query(WikiData).filter(WikiData.title.like(f"%{title}%")).all()
