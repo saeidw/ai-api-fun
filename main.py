@@ -11,12 +11,22 @@ app = FastAPI()
 def get_index():
     return "OK"
 
-@app.get("/wikidata")
+@app.get("/titles")
 def get_wikidata(
     db: Session = Depends(get_db)
 ):
-    """Fetch wiki data by a specific key-value pair."""
+    """Fetches a list of article titles - only returns titles."""
     result = db.query(WikiData).all()
-    return { "wiki": [row.title for row in result] }
+    return { "titles": [row.title for row in result] }
 
-
+@app.get("/search/title")
+def search_wikidata(
+    db: Session = Depends(get_db),
+    title: Optional[str] = Query(None)
+):
+    """Fetches a list of articles based on a search of their titles - returns the content."""
+    result = db.query(WikiData).filter(WikiData.title.like(f"%{title}%")).all()
+    resultArray = []
+    for row in result:
+        resultArray.append ( {"title": row.title, "content": row.content} )
+    return resultArray
