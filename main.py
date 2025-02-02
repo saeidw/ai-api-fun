@@ -7,6 +7,10 @@ from model import WikiData
 
 app = FastAPI()
 
+@app.get("/")
+def get_index():
+    return "OK"
+
 @app.get("/wikidata")
 def get_wikidata(
     db: Session = Depends(get_db)
