@@ -1,1 +1,1 @@
-web: gunicorn --config gunicorn_config.py api:app
+web: uvicorn main:app --host 0.0.0.0 --port 8000
